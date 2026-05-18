@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.mall_tiny01.mbg.mapper.UmsMemberBrandAttentionMapper">
+    <resultMap id="BaseResultMap" type="org.example.mall_tiny01.mbg.model.UmsMemberBrandAttention">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="member_id" jdbcType="BIGINT" property="memberId" />
+        <result column="brand_id" jdbcType="BIGINT" property="brandId" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, member_id, brand_id, create_time
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from ums_member_brand_attention
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from ums_member_brand_attention
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="org.example.mall_tiny01.mbg.model.UmsMemberBrandAttention">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into ums_member_brand_attention (member_id, brand_id, create_time)
+        values (#{memberId,jdbcType=BIGINT}, #{brandId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP})
+    </insert>
+    <insert id="insertSelective" parameterType="org.example.mall_tiny01.mbg.model.UmsMemberBrandAttention">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into ums_member_brand_attention
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="memberId != null">
+                member_id,
+            </if>
+            <if test="brandId != null">
+                brand_id,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="memberId != null">
+                #{memberId,jdbcType=BIGINT},
+            </if>
+            <if test="brandId != null">
+                #{brandId,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="org.example.mall_tiny01.mbg.model.UmsMemberBrandAttention">
+        update ums_member_brand_attention
+        <set>
+            <if test="memberId != null">
+                member_id = #{memberId,jdbcType=BIGINT},
+            </if>
+            <if test="brandId != null">
+                brand_id = #{brandId,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="org.example.mall_tiny01.mbg.model.UmsMemberBrandAttention">
+        update ums_member_brand_attention
+        set member_id = #{memberId,jdbcType=BIGINT},
+            brand_id = #{brandId,jdbcType=BIGINT},
+            create_time = #{createTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <delete id="deleteByMemberId" parameterType="java.lang.Long">
+        delete from ums_member_brand_attention
+        where member_id = #{memberId,jdbcType=BIGINT}
+    </delete>
+
+    <delete id="deleteByMemberIdAndBrandId">
+        delete from ums_member_brand_attention
+        where member_id = #{memberId,jdbcType=BIGINT} and brand_id = #{brandId,jdbcType=BIGINT}
+    </delete>
+
+    <select id="selectByMemberId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from ums_member_brand_attention
+        where member_id = #{memberId,jdbcType=BIGINT}
+        order by create_time desc
+    </select>
+</mapper>

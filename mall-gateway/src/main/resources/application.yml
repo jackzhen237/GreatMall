@@ -1,0 +1,49 @@
+server:
+  port: 8090
+
+spring:
+  main:
+    web-application-type: reactive
+  application:
+    name: mall-gateway
+  autoconfigure:
+    exclude:
+      - com.alibaba.cloud.seata.web.SeataHandlerInterceptorConfiguration
+      - org.redisson.spring.starter.RedissonAutoConfigurationV2
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+      - org.mybatis.spring.boot.autoconfigure.MybatisAutoConfiguration
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+        username: nacos
+        password: your_nacos_password_here
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: mall-pms-route
+          uri: lb://mall-pms
+          predicates:
+            - Path=/product/**,/brand/**,/sku/**,/productCategory/**,/productAttribute/**
+        - id: mall-oms-route
+          uri: lb://mall-oms
+          predicates:
+            - Path=/order/**,/cart/**,/admin/order/**
+        - id: mall-ums-route
+          uri: lb://mall-ums
+          predicates:
+            - Path=/sso/**,/member/**,/admin/**
+        - id: mall-sms-route
+          uri: lb://mall-sms
+          predicates:
+            - Path=/coupon/**,/flash/**,/home/**
+        - id: mall-cms-route
+          uri: lb://mall-cms
+          predicates:
+            - Path=/subject/**,/prefrenceArea/**
+
+seata:
+  enabled: false

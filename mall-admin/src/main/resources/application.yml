@@ -1,0 +1,122 @@
+spring:
+  application:
+    name: mall-admin
+  config:
+    import: "optional:nacos:mall-admin"
+  cloud:
+    nacos:
+      username: nacos
+      password: your_nacos_password_here
+      discovery:
+        server-addr: 127.0.0.1:8848
+        username: nacos
+        password: your_nacos_password_here
+      config:
+        server-addr: 127.0.0.1:8848
+        file-extension: yaml
+        username: nacos
+        password: your_nacos_password_here
+
+  # 数据源配置 - 如果admin不需要数据库可以删除
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: "jdbc:mysql://127.0.0.1:3306/mall?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai"
+    username: root
+    password: your_password_here
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
+  # Redis 哨兵模式（Spring Data Redis 用）
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6379
+      database: 0
+  # Redis 哨兵模式（Redisson 用）
+
+  # ES 本机 7.17.3，已装拼音+IK 插件
+  elasticsearch:
+    uris: http://127.0.0.1:9200
+
+# 服务器配置
+server:
+  port: 8085
+
+# 支付宝沙箱配置
+alipay:
+  app-id: 9021000163684278
+  app-private-key: |
+        your_alipay_private_key_here-public-key: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsgZLIDv0Ui1enqNaAlaV39b0z3OiQNJ6UUL8CepXdx+mWdRJ6z1JRXeNg1qUcJFyeY77AfPAWinPSy98nGogNsGnWbcCeYf9EDrfhswy+UAGSyn72OVSVLTZjFIA7lDrWl2aB2eXqX6X9NL/Vt2cxfqY9DeoefAsVy88OZTHhd1Px7bcHO8puS7by8zbv2C1RJQM3jq6EQff5HmreWCKDMKttRn29egZsItBvy6Ox9ioHclWg5XfoPtMS8jLLHLILGIJSEC393YAVGlabjSEXPVwoQFSPQWgyD0lPCW6qsqW+rn1O0PDfVfbg7Ua1xDpjKsBiP/vc+ZEHQ7R+WpE6wIDAQAB
+  gateway-url: https://openapi-sandbox.dl.alipaydev.com/gateway.do
+  notify-url: http://localhost:8085/alipay/notify
+  return-url: http://localhost:8085/return
+  format: json
+  charset: utf-8
+  sign-type: RSA2
+
+# MyBatis配置
+mybatis:
+  mapper-locations: classpath:mapper/*.xml,classpath*:mapper/**/*.xml  # Mapper XML文件位置，包含resources/mapper和根目录mapper
+  type-aliases-package: org.example.mall_tiny01.mbg.model,org.example.mall_tiny01.mapper  # 实体类包路径，包含mbg.model和mapper包
+  configuration:
+    map-underscore-to-camel-case: true  # 下划线转驼峰
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+# PageHelper分页插件配置
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql
+
+# JWT配置
+jwt:
+  header: Authorization
+  tokenPrefix: "Bearer "
+
+# MinIO配置
+minio:
+  endpoint: http://localhost:9000
+  accessKey: your_minio_key_here
+  secretKey: your_jwt_secret_key_64_chars_long
+  bucketName: mall
+
+
+# Seata 分布式事务配置（AT 模式）
+seata:
+  registry:
+    type: nacos
+    nacos:
+      application: seata-server
+      server-addr: 127.0.0.1:8850
+      group: SEATA_GROUP
+      namespace: "public"
+      username: nacos
+      password: your_nacos_password_here
+  config:
+    type: file
+  tx-service-group: mall_tx_group
+  data-source-proxy-mode: AT
+  service:
+    vgroup-mapping:
+      mall_tx_group: default
+
+# Feign 超时 + Sentinel 熔断配置
+feign:
+  sentinel:
+    enabled: true  # 开启 Sentinel 对 Feign 的熔断保护
+  client:
+    config:
+      default:
+        connectTimeout: 3000   # 连接超时：3 秒
+        readTimeout: 5000      # 读取超时：5 秒
+  compression:
+    request:
+      enabled: true
+    response:
+      enabled: true
+
+#  阿里云 OSS 配置

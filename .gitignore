@@ -1,0 +1,16 @@
+target/
+*.iml
+.idea/
+*.log
+*.class
+*.jar
+*.war
+!mvnw
+!mvnw.cmd
+.mvn/
+*.DS_Store
+.vscode/
+node_modules/
+dist/
+hs_err*.log
+replay*.log

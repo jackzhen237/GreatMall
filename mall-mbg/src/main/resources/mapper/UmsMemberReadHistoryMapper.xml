@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.mall_tiny01.mbg.mapper.UmsMemberReadHistoryMapper">
+    <resultMap id="BaseResultMap" type="org.example.mall_tiny01.mbg.model.UmsMemberReadHistory">
+        <id column="id" jdbcType="VARCHAR" property="id" />
+        <result column="member_id" jdbcType="BIGINT" property="memberId" />
+        <result column="member_nickname" jdbcType="VARCHAR" property="memberNickname" />
+        <result column="member_icon" jdbcType="VARCHAR" property="memberIcon" />
+        <result column="product_id" jdbcType="BIGINT" property="productId" />
+        <result column="product_name" jdbcType="VARCHAR" property="productName" />
+        <result column="product_pic" jdbcType="VARCHAR" property="productPic" />
+        <result column="product_price" jdbcType="DECIMAL" property="productPrice" />
+        <result column="product_sub_title" jdbcType="VARCHAR" property="productSubTitle" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, member_id, member_nickname, member_icon, product_id, product_name, product_pic, product_price, product_sub_title, create_time
+    </sql>
+
+    <insert id="insertSelective" parameterType="org.example.mall_tiny01.mbg.model.UmsMemberReadHistory">
+        insert into ums_member_read_history
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="memberId != null">member_id,</if>
+            <if test="memberNickname != null">member_nickname,</if>
+            <if test="memberIcon != null">member_icon,</if>
+            <if test="productId != null">product_id,</if>
+            <if test="productName != null">product_name,</if>
+            <if test="productPic != null">product_pic,</if>
+            <if test="productPrice != null">product_price,</if>
+            <if test="productSubTitle != null">product_sub_title,</if>
+            <if test="createTime != null">create_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id,jdbcType=VARCHAR},</if>
+            <if test="memberId != null">#{memberId,jdbcType=BIGINT},</if>
+            <if test="memberNickname != null">#{memberNickname,jdbcType=VARCHAR},</if>
+            <if test="memberIcon != null">#{memberIcon,jdbcType=VARCHAR},</if>
+            <if test="productId != null">#{productId,jdbcType=BIGINT},</if>
+            <if test="productName != null">#{productName,jdbcType=VARCHAR},</if>
+            <if test="productPic != null">#{productPic,jdbcType=VARCHAR},</if>
+            <if test="productPrice != null">#{productPrice,jdbcType=DECIMAL},</if>
+            <if test="productSubTitle != null">#{productSubTitle,jdbcType=VARCHAR},</if>
+            <if test="createTime != null">#{createTime,jdbcType=TIMESTAMP},</if>
+        </trim>
+    </insert>
+
+    <delete id="deleteByMemberId" parameterType="java.lang.Long">
+        delete from ums_member_read_history where member_id = #{memberId,jdbcType=BIGINT}
+    </delete>
+
+    <delete id="deleteByIds">
+        delete from ums_member_read_history where id in
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectByMemberId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from ums_member_read_history
+        where member_id = #{memberId,jdbcType=BIGINT}
+        order by create_time desc
+    </select>
+</mapper>

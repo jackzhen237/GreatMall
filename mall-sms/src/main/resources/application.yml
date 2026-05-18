@@ -1,0 +1,73 @@
+server:
+  port: 8084
+
+spring:
+  config:
+    import: "optional:nacos:mall-sms"
+  application:
+    name: mall-sms
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/mall?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
+    username: root
+    password: your_password_here
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+        username: nacos
+        password: your_nacos_password_here
+      config:
+        server-addr: 127.0.0.1:8848
+        file-extension: yaml
+        username: nacos
+        password: your_nacos_password_here
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6379
+      database: 0
+
+# Minio 对象存储配置
+minio:
+  endpoint: http://127.0.0.1:9000
+  accessKey: your_minio_key_here
+  secretKey: your_jwt_secret_key_64_chars_long
+  bucketName: mall
+
+
+# Seata 分布式事务配置（AT 模式）
+seata:
+  registry:
+    type: nacos
+    nacos:
+      application: seata-server
+      server-addr: 127.0.0.1:8850
+      group: SEATA_GROUP
+  config:
+    type: file
+  tx-service-group: mall_tx_group
+  data-source-proxy-mode: AT
+  service:
+    vgroup-mapping:
+      mall_tx_group: default
+
+# MyBatis 配置
+mybatis:
+  mapper-locations: classpath*:mapper/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+# Feign 超时配置（防止远程调用拖垮线程池）
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 3000   # 连接超时：3 秒
+        readTimeout: 5000      # 读取超时：5 秒
+  compression:
+    request:
+      enabled: true
+    response:
+      enabled: true

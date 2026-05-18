@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.mall_tiny01.mbg.mapper.UmsMemberProductCollectionMapper">
+    <resultMap id="BaseResultMap" type="org.example.mall_tiny01.mbg.model.UmsMemberProductCollection">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="member_id" jdbcType="BIGINT" property="memberId" />
+        <result column="member_nickname" jdbcType="VARCHAR" property="memberNickname" />
+        <result column="member_icon" jdbcType="VARCHAR" property="memberIcon" />
+        <result column="product_id" jdbcType="BIGINT" property="productId" />
+        <result column="product_name" jdbcType="VARCHAR" property="productName" />
+        <result column="product_pic" jdbcType="VARCHAR" property="productPic" />
+        <result column="product_price" jdbcType="DECIMAL" property="productPrice" />
+        <result column="product_sub_title" jdbcType="VARCHAR" property="productSubTitle" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, member_id, member_nickname, member_icon, product_id, product_name, product_pic, product_price, product_sub_title, create_time
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from ums_member_product_collection
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from ums_member_product_collection
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" parameterType="org.example.mall_tiny01.mbg.model.UmsMemberProductCollection">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into ums_member_product_collection (member_id, member_nickname, member_icon,
+        product_id, product_name, product_pic, product_price, product_sub_title, create_time)
+        values (#{memberId,jdbcType=BIGINT}, #{memberNickname,jdbcType=VARCHAR}, #{memberIcon,jdbcType=VARCHAR},
+        #{productId,jdbcType=BIGINT}, #{productName,jdbcType=VARCHAR}, #{productPic,jdbcType=VARCHAR},
+        #{productPrice,jdbcType=DECIMAL}, #{productSubTitle,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    <insert id="insertSelective" parameterType="org.example.mall_tiny01.mbg.model.UmsMemberProductCollection">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into ums_member_product_collection
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="memberId != null">member_id,</if>
+            <if test="memberNickname != null">member_nickname,</if>
+            <if test="memberIcon != null">member_icon,</if>
+            <if test="productId != null">product_id,</if>
+            <if test="productName != null">product_name,</if>
+            <if test="productPic != null">product_pic,</if>
+            <if test="productPrice != null">product_price,</if>
+            <if test="productSubTitle != null">product_sub_title,</if>
+            <if test="createTime != null">create_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="memberId != null">#{memberId,jdbcType=BIGINT},</if>
+            <if test="memberNickname != null">#{memberNickname,jdbcType=VARCHAR},</if>
+            <if test="memberIcon != null">#{memberIcon,jdbcType=VARCHAR},</if>
+            <if test="productId != null">#{productId,jdbcType=BIGINT},</if>
+            <if test="productName != null">#{productName,jdbcType=VARCHAR},</if>
+            <if test="productPic != null">#{productPic,jdbcType=VARCHAR},</if>
+            <if test="productPrice != null">#{productPrice,jdbcType=DECIMAL},</if>
+            <if test="productSubTitle != null">#{productSubTitle,jdbcType=VARCHAR},</if>
+            <if test="createTime != null">#{createTime,jdbcType=TIMESTAMP},</if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="org.example.mall_tiny01.mbg.model.UmsMemberProductCollection">
+        update ums_member_product_collection
+        <set>
+            <if test="memberId != null">member_id = #{memberId,jdbcType=BIGINT},</if>
+            <if test="memberNickname != null">member_nickname = #{memberNickname,jdbcType=VARCHAR},</if>
+            <if test="memberIcon != null">member_icon = #{memberIcon,jdbcType=VARCHAR},</if>
+            <if test="productId != null">product_id = #{productId,jdbcType=BIGINT},</if>
+            <if test="productName != null">product_name = #{productName,jdbcType=VARCHAR},</if>
+            <if test="productPic != null">product_pic = #{productPic,jdbcType=VARCHAR},</if>
+            <if test="productPrice != null">product_price = #{productPrice,jdbcType=DECIMAL},</if>
+            <if test="productSubTitle != null">product_sub_title = #{productSubTitle,jdbcType=VARCHAR},</if>
+            <if test="createTime != null">create_time = #{createTime,jdbcType=TIMESTAMP},</if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="org.example.mall_tiny01.mbg.model.UmsMemberProductCollection">
+        update ums_member_product_collection
+        set member_id = #{memberId,jdbcType=BIGINT},
+            member_nickname = #{memberNickname,jdbcType=VARCHAR},
+            member_icon = #{memberIcon,jdbcType=VARCHAR},
+            product_id = #{productId,jdbcType=BIGINT},
+            product_name = #{productName,jdbcType=VARCHAR},
+            product_pic = #{productPic,jdbcType=VARCHAR},
+            product_price = #{productPrice,jdbcType=DECIMAL},
+            product_sub_title = #{productSubTitle,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <!-- 自定义业务方法 -->
+    <delete id="deleteByMemberId" parameterType="java.lang.Long">
+        delete from ums_member_product_collection where member_id = #{memberId,jdbcType=BIGINT}
+    </delete>
+
+    <delete id="deleteByMemberIdAndProductId">
+        delete from ums_member_product_collection
+        where member_id = #{memberId,jdbcType=BIGINT} and product_id = #{productId,jdbcType=BIGINT}
+    </delete>
+
+    <select id="selectByMemberId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from ums_member_product_collection
+        where member_id = #{memberId,jdbcType=BIGINT}
+        order by create_time desc
+    </select>
+
+    <select id="selectByMemberIdAndProductId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from ums_member_product_collection
+        where member_id = #{memberId,jdbcType=BIGINT} and product_id = #{productId,jdbcType=BIGINT}
+    </select>
+</mapper>
