@@ -28,6 +28,7 @@
         <module>mall-cms</module>
         <module>mall-gateway</module>
         <module>mall-admin</module>
+        <module>mall-ai</module>
     </modules>
 
     <properties>
