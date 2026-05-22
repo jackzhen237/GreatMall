@@ -1,0 +1,19 @@
+server:
+  port: 8084
+
+spring:
+  application:
+    name: mall-ai
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+        username: nacos
+        password: your_nacos_password_here
+
+# Ollama 配置
+ollama:
+  base-url: http://localhost:11434
+  model-name: qwen2.5
+  embedding-model: nomic-embed-text
+

@@ -44,6 +44,10 @@ spring:
           uri: lb://mall-cms
           predicates:
             - Path=/subject/**,/prefrenceArea/**
+        - id: mall-ai-route
+          uri: lb://mall-ai
+          predicates:
+            - Path=/api/agent/**,/api/chat/**
 
 seata:
   enabled: false
