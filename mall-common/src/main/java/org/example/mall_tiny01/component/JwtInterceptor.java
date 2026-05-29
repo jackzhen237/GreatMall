@@ -9,9 +9,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.mall_tiny01.config.JwtConfig;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
-@Component
+// 注意：这里不放 @Component，改为在 WebConfig 中 @Bean 创建，
+// 避免 Spring 自动注册一个不带排除规则的拦截器副本
 public class JwtInterceptor implements HandlerInterceptor {
     @Autowired
     private JwtConfig jwtConfig;
@@ -25,6 +25,13 @@ public class JwtInterceptor implements HandlerInterceptor {
         }
         
         if (uri.equals("/") || uri.contains("/admin/login") || uri.contains("/login")) {
+            return true;
+        }
+        
+        // 放行 Swagger / Actuator / 静态资源
+        if (uri.contains("/swagger-ui") || uri.contains("/v3/api-docs")
+                || uri.contains("/swagger-resources") || uri.contains("/webjars")
+                || uri.contains("/actuator") || uri.endsWith(".html")) {
             return true;
         }
         

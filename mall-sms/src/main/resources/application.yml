@@ -7,37 +7,38 @@ spring:
   application:
     name: mall-sms
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/mall?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://192.168.158.130:3306/mall?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
     username: root
-    password: your_password_here
+    password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
   cloud:
     nacos:
       discovery:
         server-addr: 127.0.0.1:8848
         username: nacos
-        password: your_nacos_password_here
+        password: Zhc5gu7Vs778
       config:
         server-addr: 127.0.0.1:8848
         file-extension: yaml
         username: nacos
-        password: your_nacos_password_here
+        password: Zhc5gu7Vs778
   data:
     redis:
-      host: 127.0.0.1
+      host: 192.168.158.130
       port: 6379
       database: 0
 
 # Minio 对象存储配置
 minio:
   endpoint: http://127.0.0.1:9000
-  accessKey: your_minio_key_here
-  secretKey: your_jwt_secret_key_64_chars_long
+  accessKey: minioadmin
+  secretKey: minioadmin
   bucketName: mall
 
 
-# Seata 分布式事务配置（AT 模式）
+# Seata 分布式事务配置（AT 模式）- 暂时禁用
 seata:
+  enabled: false
   registry:
     type: nacos
     nacos:
@@ -71,3 +72,13 @@ feign:
       enabled: true
     response:
       enabled: true
+
+# Swagger UI 配置（强制启用，不走鉴权）
+springdoc:
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+  default-produces-media-type: application/json

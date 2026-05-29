@@ -39,9 +39,9 @@ public class SsoController {
 
     @PostMapping("/login")
     @ApiOperation("用户登录")
-    public Result login(@RequestParam String username, @RequestParam String password) {
+    public Result login(@RequestBody LoginDTO loginDTO) {
         try {
-            String token = ssoService.login(username, password);
+            String token = ssoService.login(loginDTO.getUsername(), loginDTO.getPassword());
             Map<String, String> tokenData = new HashMap<>();
             tokenData.put("token", token);
             tokenData.put("tokenHead", "Bearer ");

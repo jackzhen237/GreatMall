@@ -93,10 +93,10 @@ public class MCPTools {
             return "MCP 功能未启用";
         }
         Result<PmsPortalProductDetail> result = pmsFeignClient.getProductDetail(productId);
-        if (result != null && result.isSuccess()) {
+        if (result != null && result.getCode() != null && result.getCode() == 200) {
             PmsPortalProductDetail product = result.getData();
-            return String.format("商品ID:%d, 商品名称:%s, 价格:%s", 
-                product.getProduct().getId(), 
+            return String.format("商品ID:%d, 商品名称:%s, 价格:%s",
+                product.getProduct().getId(),
                 product.getProduct().getName(),
                 product.getProduct().getPrice());
         }
@@ -115,7 +115,7 @@ public class MCPTools {
             return "MCP 功能未启用";
         }
         Result<PmsProduct> result = pmsFeignClient.getProduct(productId);
-        if (result != null && result.isSuccess()) {
+        if (result != null && result.getCode() != null && result.getCode() == 200) {
             PmsProduct product = result.getData();
             return String.format("商品ID:%d, 商品名称:%s", product.getId(), product.getName());
         }
@@ -134,7 +134,7 @@ public class MCPTools {
             return "MCP 功能未启用";
         }
         Result<PmsBrand> result = pmsFeignClient.getBrandDetail(brandId);
-        if (result != null && result.isSuccess()) {
+        if (result != null && result.getCode() != null && result.getCode() == 200) {
             PmsBrand brand = result.getData();
             return String.format("品牌ID:%d, 品牌名称:%s", brand.getId(), brand.getName());
         }

@@ -1,7 +1,6 @@
 package org.example.mallai.agent;
 
-import dev.langchain4j.service.Agent;
-import dev.langchain4j.service.SystemMessage;
+import org.springframework.stereotype.Component;
 
 /**
  * 商场 AI 智能体接口
@@ -14,6 +13,7 @@ import dev.langchain4j.service.SystemMessage;
  * - 采用接口+实现类的设计模式，便于后续扩展和替换
  * - chat 方法作为与 Agent 交互的唯一入口，简化调用方式
  */
+@Component
 public interface MallAgent {
 
     /**

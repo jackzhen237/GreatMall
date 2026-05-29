@@ -6,23 +6,23 @@ spring:
   cloud:
     nacos:
       username: nacos
-      password: your_nacos_password_here
+      password: nacos
       discovery:
         server-addr: 127.0.0.1:8848
         username: nacos
-        password: your_nacos_password_here
+        password: Zhc5gu7Vs778
       config:
         server-addr: 127.0.0.1:8848
         file-extension: yaml
         username: nacos
-        password: your_nacos_password_here
+        password: Zhc5gu7Vs778
 
   # 数据源配置 - 如果admin不需要数据库可以删除
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
-    url: "jdbc:mysql://127.0.0.1:3306/mall?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai"
+    url: "jdbc:mysql://192.168.158.130:3306/mall?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai"
     username: root
-    password: your_password_here
+    password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jackson:
@@ -32,7 +32,7 @@ spring:
   # Redis 哨兵模式（Spring Data Redis 用）
   data:
     redis:
-      host: 127.0.0.1
+      host: 192.168.158.130
       port: 6379
       database: 0
   # Redis 哨兵模式（Redisson 用）
@@ -49,7 +49,7 @@ server:
 alipay:
   app-id: 9021000163684278
   app-private-key: |
-        your_alipay_private_key_here-public-key: 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
+    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
   gateway-url: https://openapi-sandbox.dl.alipaydev.com/gateway.do
   notify-url: http://localhost:8085/alipay/notify
   return-url: http://localhost:8085/return
@@ -80,13 +80,14 @@ jwt:
 # MinIO配置
 minio:
   endpoint: http://localhost:9000
-  accessKey: your_minio_key_here
-  secretKey: your_jwt_secret_key_64_chars_long
+  accessKey: minioadmin
+  secretKey: minioadmin
   bucketName: mall
 
 
-# Seata 分布式事务配置（AT 模式）
+# Seata 分布式事务配置（AT 模式）- 暂时禁用
 seata:
+  enabled: false
   registry:
     type: nacos
     nacos:
@@ -95,7 +96,7 @@ seata:
       group: SEATA_GROUP
       namespace: "public"
       username: nacos
-      password: your_nacos_password_here
+      password: nacos
   config:
     type: file
   tx-service-group: mall_tx_group
@@ -120,3 +121,13 @@ feign:
       enabled: true
 
 #  阿里云 OSS 配置
+
+# Swagger UI 配置（强制启用，不走鉴权）
+springdoc:
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+  default-produces-media-type: application/json

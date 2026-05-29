@@ -8,7 +8,6 @@ spring:
     name: mall-gateway
   autoconfigure:
     exclude:
-      - com.alibaba.cloud.seata.web.SeataHandlerInterceptorConfiguration
       - org.redisson.spring.starter.RedissonAutoConfigurationV2
       - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
       - org.mybatis.spring.boot.autoconfigure.MybatisAutoConfiguration
@@ -17,7 +16,7 @@ spring:
       discovery:
         server-addr: 127.0.0.1:8848
         username: nacos
-        password: your_nacos_password_here
+        password: Zhc5gu7Vs778
     gateway:
       discovery:
         locator:

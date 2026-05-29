@@ -1,11 +1,13 @@
 package org.example.mallai.rag;
 
+import dev.langchain4j.data.document.Document;
+import dev.langchain4j.data.document.Metadata;
+import dev.langchain4j.data.embedding.Embedding;
+import dev.langchain4j.data.segment.TextSegment;
 import dev.langchain4j.model.embedding.EmbeddingModel;
 import dev.langchain4j.store.embedding.EmbeddingStore;
 import dev.langchain4j.store.embedding.inmemory.InMemoryEmbeddingStore;
-import dev.langchain4j.document.Document;
 import org.springframework.stereotype.Service;
-import dev.langchain4j.data.segment.TextSegment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -170,8 +172,9 @@ public class RagService {
      * @param document 要添加的文档（包含内容和元数据）
      */
     public void addDocument(Document document) {
-        TextSegment segment = TextSegment.from(document.content(), toMap(document.metadata()));
-        embeddingStore.add(segment, embeddingModel.embed(segment).content());
+        TextSegment segment = TextSegment.from(document.text(), document.metadata());
+        Embedding embedding = embeddingModel.embed(segment).content();
+        embeddingStore.add(embedding, segment);
     }
 
     /**
@@ -180,16 +183,16 @@ public class RagService {
      * @param documents 文档列表
      */
     public void addDocuments(List<Document> documents) {
+        List<Embedding> embeddings = new ArrayList<>();
         List<TextSegment> segments = new ArrayList<>();
-        List<float[]> embeddings = new ArrayList<>();
         
         for (Document doc : documents) {
-            TextSegment segment = TextSegment.from(doc.content(), toMap(doc.metadata()));
+            TextSegment segment = TextSegment.from(doc.text(), doc.metadata());
             segments.add(segment);
-            embeddings.add(embeddingModel.embed(segment).content().vectorAsList().toArray(new float[0]));
+            embeddings.add(embeddingModel.embed(segment).content());
         }
         
-        embeddingStore.addAll(segments, embeddings);
+        embeddingStore.addAll(embeddings, segments);
     }
 
     /**
@@ -248,7 +251,8 @@ public class RagService {
      * 相似度范围是 0~1，1 表示完全相同，0 表示完全不相关
      */
     public List<String> retrieve(String query, int topK) {
-        return embeddingStore.findRelevant(query, topK, 0.7)
+        Embedding queryEmbedding = embeddingModel.embed(query).content();
+        return embeddingStore.findRelevant(queryEmbedding, topK, 0.7)
                 .stream()
                 .map(result -> result.embedded().text())
                 .toList();
@@ -290,7 +294,8 @@ public class RagService {
      * @return 检索结果列表，每项包含文本和相关性分数
      */
     public List<RetrievalResult> retrieveWithScore(String query, int topK) {
-        return embeddingStore.findRelevant(query, topK, 0.7)
+        Embedding queryEmbedding = embeddingModel.embed(query).content();
+        return embeddingStore.findRelevant(queryEmbedding, topK, 0.7)
                 .stream()
                 .map(result -> new RetrievalResult(
                     result.embedded().text(),
@@ -389,14 +394,6 @@ public class RagService {
      */
     public void clear() {
         embeddingStore.removeAll();
-    }
-
-    private Map<String, String> toMap(Metadata metadata) {
-        return metadata.asMap().entrySet().stream()
-            .collect(java.util.stream.Collectors.toMap(
-                e -> e.getKey(),
-                e -> String.valueOf(e.getValue())
-            ));
     }
 
     /**

@@ -13,4 +13,20 @@
     <artifactId>mall-mbg</artifactId>
     <packaging>jar</packaging>
 
+    <dependencies>
+        <!-- Swagger 注解 -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-boot-starter</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+
+        <!-- Lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+    </dependencies>
+
 </project>

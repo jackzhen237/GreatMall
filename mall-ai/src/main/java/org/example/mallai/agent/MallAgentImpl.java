@@ -1,8 +1,7 @@
 package org.example.mallai.agent;
 
 import dev.langchain4j.model.chat.ChatLanguageModel;
-import dev.langchain4j.service.Agent;
-import dev.langchain4j.service.SystemMessage;
+import dev.langchain4j.service.spring.AiService;
 import org.example.mallai.chat.ChatHistoryManager;
 import org.example.mallai.chat.ChatMessage;
 import org.example.mallai.chat.ChatSession;
@@ -18,12 +17,11 @@ import org.springframework.stereotype.Component;
  *                              商场 AI 智能体实现类
  * ╚══════════════════════════════════════════════════════════════════════════════════╝
  *
- * 【这个类是做什么的？】
- * 这是 Agent 的核心实现类，负责：
- * 1. 接收用户消息
- * 2. 通过 RAG 检索相关知识
- * 3. 结合 Tools 执行实际操作
- * 4. 将结果返回给用户
+ * 【说明】
+ * 这个类实现了 MallAgent 接口，提供完整的 AI 对话能力：
+ * - RAG 知识检索：从向量数据库检索相关知识
+ * - 会话管理：维护对话历史
+ * - Prompt 构建：构建完整的上下文 Prompt
  *
  *
  * 【Agent 的工作流程】
@@ -88,7 +86,6 @@ import org.springframework.stereotype.Component;
  *   AI: "6999元"             ← 有了历史，AI知道在问Mate60的价格
  *
  */
-@Agent
 @Component
 public class MallAgentImpl implements MallAgent {
 

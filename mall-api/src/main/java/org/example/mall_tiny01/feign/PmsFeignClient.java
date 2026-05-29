@@ -1,6 +1,7 @@
 package org.example.mall_tiny01.feign;
 
 import org.example.mall_tiny01.dto.CartProduct;
+import org.example.mall_tiny01.dto.PageResult;
 import org.example.mall_tiny01.dto.PmsPortalProductDetail;
 import org.example.mall_tiny01.dto.Result;
 import org.example.mall_tiny01.dto.SkuStockReduceDto;
@@ -32,5 +33,29 @@ public interface PmsFeignClient {
 
     @PostMapping("/sku/stock/batchReduce")
     Result<Integer> batchUpdateSkuStock(@RequestBody List<SkuStockReduceDto> reduceList);
+
+    /**
+     * 获取所有品牌列表（用于 RAG 知识库初始化）
+     */
+    @GetMapping("/brand/listAll")
+    Result<List<PmsBrand>> listAllBrands();
+
+    /**
+     * 分页获取商品列表（用于 RAG 知识库初始化）
+     */
+    @GetMapping("/product/list")
+    Result<PageResult<PmsProduct>> listProducts(
+            @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+            @RequestParam(value = "pageSize", defaultValue = "100") Integer pageSize
+    );
+
+    /**
+     * 获取推荐品牌列表（用于 RAG 知识库初始化）
+     */
+    @GetMapping("/brand/recommendList")
+    Result<PageResult<PmsBrand>> getRecommendBrands(
+            @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+            @RequestParam(value = "pageSize", defaultValue = "100") Integer pageSize
+    );
 
 }

@@ -1,7 +1,7 @@
 package org.example.mallai.rag;
 
-import dev.langchain4j.document.Document;
-import dev.langchain4j.document.Metadata;
+import dev.langchain4j.data.document.Document;
+import dev.langchain4j.data.document.Metadata;
 import java.util.Map;
 
 /**
@@ -73,9 +73,6 @@ public class MallDocument {
             String price,
             String attributes) {
 
-        // 【content 内容构建】
-        // 使用文本格式化模板，将商品信息组织成易读的文本格式
-        // 这些文本后续会被 Embedding 模型转换为向量
         String content = String.format("""
             商品名称：%s
             品牌：%s
@@ -83,25 +80,21 @@ public class MallDocument {
             价格：%s
             商品属性：%s
             商品描述：%s
-            """, productName, brandName, categoryName, price, attributes, description);
+            """, 
+            productName != null ? productName : "未知",
+            brandName != null ? brandName : "未知",
+            categoryName != null ? categoryName : "未知",
+            price != null ? price : "暂无报价",
+            attributes != null ? attributes : "暂无",
+            description != null ? description : "暂无描述");
 
-        // 【metadata 元数据构建】
-        // 元数据不参与向量计算，但非常重要：
-        // 1. 用于追溯：这个文档对应哪个商品
-        // 2. 用于过滤：可以按品牌、分类筛选文档
-        // 3. 用于关联：可以关联到原始数据库中的商品记录
         Metadata metadata = Metadata.from(Map.of(
             "productId", String.valueOf(productId),
-            "type", "product",  // 文档类型标识，便于区分不同类型文档
-            "brandName", brandName,
-            "categoryName", categoryName
+            "type", "product",
+            "brandName", brandName != null ? brandName : "未知",
+            "categoryName", categoryName != null ? categoryName : "未知"
         ));
 
-        // 【Document.from() 的作用】
-        // 将 content（文本内容）和 metadata（元数据）组合成一个 Document 对象
-        // 这个 Document 对象后续会被：
-        // 1. EmbeddingModel 转换为向量
-        // 2. 存储到 EmbeddingStore（向量数据库）
         return Document.from(content, metadata);
     }
 
@@ -134,17 +127,23 @@ public class MallDocument {
             String firstLetter,
             Integer productCount) {
 
+        String brandNameSafe = brandName != null ? brandName : "未知品牌";
+        
         String content = String.format("""
             品牌名称：%s
             首字母：%s
             产品数量：%s
             品牌故事：%s
-            """, brandName, firstLetter, productCount, brandStory);
+            """, 
+            brandNameSafe,
+            firstLetter != null ? firstLetter : "未知",
+            productCount != null ? productCount : 0,
+            brandStory != null ? brandStory : "暂无品牌故事");
 
         Metadata metadata = Metadata.from(Map.of(
             "brandId", String.valueOf(brandId),
             "type", "brand",
-            "brandName", brandName
+            "brandName", brandNameSafe
         ));
 
         return Document.from(content, metadata);
@@ -179,17 +178,23 @@ public class MallDocument {
             String description,
             String features) {
 
+        String categoryNameSafe = categoryName != null ? categoryName : "未知分类";
+        
         String content = String.format("""
             分类名称：%s
             父分类：%s
             分类描述：%s
             分类特点：%s
-            """, categoryName, parentCategoryName, description, features);
+            """, 
+            categoryNameSafe,
+            parentCategoryName != null ? parentCategoryName : "无",
+            description != null ? description : "暂无描述",
+            features != null ? features : "暂无特点");
 
         Metadata metadata = Metadata.from(Map.of(
             "categoryId", String.valueOf(categoryId),
             "type", "category",
-            "categoryName", categoryName
+            "categoryName", categoryNameSafe
         ));
 
         return Document.from(content, metadata);
@@ -225,12 +230,15 @@ public class MallDocument {
             问题：%s
             答案：%s
             分类：%s
-            """, question, answer, category);
+            """, 
+            question != null ? question : "未知问题",
+            answer != null ? answer : "暂无答案",
+            category != null ? category : "未分类");
 
         Metadata metadata = Metadata.from(Map.of(
             "helpId", String.valueOf(helpId),
             "type", "help",
-            "category", category
+            "category", category != null ? category : "未分类"
         ));
 
         return Document.from(content, metadata);

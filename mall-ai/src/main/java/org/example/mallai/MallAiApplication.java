@@ -7,7 +7,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @EnableDiscoveryClient
 @SpringBootApplication(scanBasePackages = {"org.example"})
-@EnableFeignClients
+@EnableFeignClients(basePackages = {"org.example.mall_tiny01.feign"})
 public class MallAiApplication {
 
     public static void main(String[] args) {

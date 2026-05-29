@@ -1,19 +1,75 @@
 server:
-  port: 8084
+  port: 8088
 
 spring:
   application:
     name: mall-ai
+  datasource:
+    url: jdbc:mysql://192.168.158.130:3306/mall?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
   cloud:
     nacos:
       discovery:
         server-addr: 127.0.0.1:8848
         username: nacos
-        password: your_nacos_password_here
+        password: Zhc5gu7Vs778
+      config:
+        server-addr: 127.0.0.1:8848
+        file-extension: yaml
+        username: nacos
+        password: Zhc5gu7Vs778
+  data:
+    redis:
+      host: 192.168.158.130
+      port: 6379
+      database: 0
+
+# Minio 对象存储配置
+minio:
+  endpoint: http://127.0.0.1:9000
+  accessKey: minioadmin
+  secretKey: minioadmin
+  bucketName: mall
+
+# Seata 分布式事务配置（AT 模式）- 暂时禁用
+seata:
+  enabled: false
+  registry:
+    type: nacos
+    nacos:
+      application: seata-server
+      server-addr: 127.0.0.1:8850
+      group: SEATA_GROUP
+  config:
+    type: file
+  tx-service-group: mall_tx_group
+  data-source-proxy-mode: AT
+  service:
+    vgroup-mapping:
+      mall_tx_group: default
+
+# MyBatis 配置
+mybatis:
+  mapper-locations: classpath*:mapper/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 # Ollama 配置
 ollama:
   base-url: http://localhost:11434
   model-name: qwen2.5
   embedding-model: nomic-embed-text
+
+# Swagger UI 配置（强制启用，不走鉴权）
+springdoc:
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+  default-produces-media-type: application/json
 

@@ -1,6 +1,6 @@
 package org.example.mallai.rag;
 
-import dev.langchain4j.document.Document;
+import dev.langchain4j.data.document.Document;
 import org.example.mall_tiny01.dto.PageResult;
 import org.example.mall_tiny01.feign.PmsFeignClient;
 import org.example.mall_tiny01.dto.Result;
@@ -200,7 +200,7 @@ public class KnowledgeBaseInitializer implements CommandLineRunner {
         // 调用 listAllBrands() 一次性获取所有品牌
         Result<List<PmsBrand>> result = pmsFeignClient.listAllBrands();
 
-        if (result != null && result.getCode() == 200 && result.getData() != null) {
+        if (result != null && result.getCode() != null && result.getCode() == 200 && result.getData() != null) {
             List<Document> brandDocs = result.getData().stream()
                 .map(brand -> MallDocument.createBrandDocument(
                     brand.getId(),
